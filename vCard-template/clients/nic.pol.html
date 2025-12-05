@@ -20,10 +20,22 @@
 
         .card {
             background: white;
-            padding: 25px;
+            padding: 0;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .cover-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-content {
+            padding: 25px;
         }
 
         img.profile {
@@ -31,8 +43,10 @@
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
+            margin-top: -70px;
             margin-bottom: 20px;
-            border: 4px solid var(--primary-color);
+            border: 4px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         h1 {
@@ -112,12 +126,15 @@
 
 <div class="card">
 
-    <img class="profile" src="../images/nicholas-pollack.jpg" alt="Nicholas Pollack">
+    <!-- Cover Photo - University/Company Logo -->
+    <img class="cover-photo" src="../images/uq-cover.jpg" alt="University of Queensland">
+
+    <div class="card-content">
+        <!-- Profile Photo - overlaps the cover photo -->
+        <img class="profile" src="../images/nicholas-pollack.jpg" alt="Nicholas Pollack">
 
     <h1>Nicholas Pollack</h1>
     <h3>3rd Year Mechatronics Engineering Student</h3>
-    <p class="company {{COMPANY_HIDDEN}}">The University of Queensland</p>
-
 
     <p class="about">Passionate about embedded systems, automation and robotics</p>
 
@@ -153,6 +170,8 @@ END:VCARD`;
             URL.revokeObjectURL(url);
         }
     </script>
+
+    </div> <!-- End card-content -->
 
 </div>
 
