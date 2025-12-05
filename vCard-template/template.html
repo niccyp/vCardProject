@@ -6,6 +6,10 @@
     <title>{{NAME}} - Digital Card</title>
 
     <style>
+        :root {
+            --primary-color: {{COLOR}};
+        }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
@@ -28,21 +32,31 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 20px;
+            border: 4px solid var(--primary-color, #007bff);
         }
 
         h1 {
             margin: 10px 0 5px;
             font-size: 28px;
+            color: #333;
         }
+        
         h3 {
-            margin: 0;
+            margin: 0 0 5px;
             font-weight: normal;
             color: #555;
+        }
+
+        .company {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #777;
         }
 
         p.about {
             margin: 20px 0;
             line-height: 1.5;
+            color: #666;
         }
 
         .button {
@@ -50,15 +64,39 @@
             width: 100%;
             padding: 12px;
             margin: 8px 0;
-            background: #007bff;
+            background: var(--primary-color, #007bff);
             color: white;
             text-decoration: none;
             border-radius: 8px;
             font-size: 16px;
+            transition: opacity 0.3s;
         }
 
         .button:hover {
-            opacity: 0.9;
+            opacity: 0.85;
+        }
+
+        .additional-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .additional-links a {
+            display: block;
+            margin: 8px 0;
+            color: var(--primary-color, #007bff);
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hide sections if no data */
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -67,16 +105,24 @@
 
 <div class="card">
 
-    <img class="profile" src="{{PHOTO_URL}}" alt="Profile Photo">
+    <!-- Profile Photo - uses placeholder if none provided -->
+    <img class="profile" src="{{PHOTO_PATH}}" alt="{{NAME}}" onerror="this.src='../images/default-avatar.png'">
 
     <h1>{{NAME}}</h1>
     <h3>{{JOB_TITLE}}</h3>
+    <p class="company {{COMPANY_HIDDEN}}">{{COMPANY}}</p>
 
-    <p class="about">{{ABOUT}}</p>
+    <p class="about {{BIO_HIDDEN}}">{{BIO}}</p>
 
-    <a class="button" href="mailto:{{EMAIL}}">Email</a>
-    <a class="button" href="tel:{{PHONE}}">Call</a>
-    <a class="button" href="{{WEBSITE}}" target="_blank">Website</a>
+    <!-- Primary Contact Buttons -->
+    <a class="button" href="mailto:{{EMAIL}}">📧 Email</a>
+    <a class="button" href="tel:{{PHONE}}">📞 Call</a>
+    <a class="button {{WEBSITE_HIDDEN}}" href="{{WEBSITE}}" target="_blank">🌐 Website</a>
+
+    <!-- Additional Links Section -->
+    <div class="additional-links {{ADDITIONAL_LINKS_HIDDEN}}">
+        {{ADDITIONAL_LINKS}}
+    </div>
 
 </div>
 

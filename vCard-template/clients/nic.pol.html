@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{NAME}} - Digital Card</title>
+    <title>Nicholas Pollack - Digital Card</title>
 
     <style>
+        :root {
+            --primary-color: #007bff;
+        }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
@@ -28,21 +32,31 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 20px;
+            border: 4px solid var(--primary-color);
         }
 
         h1 {
             margin: 10px 0 5px;
             font-size: 28px;
+            color: #333;
         }
+        
         h3 {
-            margin: 0;
+            margin: 0 0 5px;
             font-weight: normal;
             color: #555;
+        }
+
+        .company {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #777;
         }
 
         p.about {
             margin: 20px 0;
             line-height: 1.5;
+            color: #666;
         }
 
         .button {
@@ -50,15 +64,38 @@
             width: 100%;
             padding: 12px;
             margin: 8px 0;
-            background: #007bff;
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 8px;
             font-size: 16px;
+            transition: opacity 0.3s;
         }
 
         .button:hover {
-            opacity: 0.9;
+            opacity: 0.85;
+        }
+
+        .additional-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .additional-links a {
+            display: block;
+            margin: 8px 0;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -67,16 +104,17 @@
 
 <div class="card">
 
-    <img class="profile" src="C:\Users\nicho\OneDrive\Desktop\vCard-template\images\nic_poll.jpg" alt="Profile Photo">
+    <img class="profile" src="C:\Users\nicho\OneDrive\Desktop\vCard-template\images\nic_poll.jpg" alt="Nicholas Pollack">
 
     <h1>Nicholas Pollack</h1>
     <h3>3rd Year Mechatronics Engineering Student</h3>
+    <p class="company {{COMPANY_HIDDEN}}">The University of Queensland</p>
 
     <p class="about">Passionate about embedded systems, automation and robotics</p>
 
-    <a class="button" href="mailto:npollack24@gmail.com">Email</a>
-    <a class="button" href="tel:+61490762889">Call</a>
-    <a class="button" href="https://www.linkedin.com/in/nicholaspollack/" target="_blank">Website</a>
+    <a class="button" href="mailto:npollack24@gmail.com">📧 Email</a>
+    <a class="button" href="tel:+61490762889">📞 Call</a>
+    <a class="button" href="https://www.linkedin.com/in/nicholaspollack/" target="_blank">🌐 Website</a>
 
 </div>
 
