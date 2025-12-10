@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{NAME}} - Digital Card</title>
+    <title>Nicholas Pollack - Digital Card</title>
 
     <style>
+        :root {
+            --primary-color: #007bff;
+        }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
@@ -16,10 +20,22 @@
 
         .card {
             background: white;
-            padding: 25px;
+            padding: 0;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .cover-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-content {
+            padding: 25px;
         }
 
         img.profile {
@@ -27,38 +43,108 @@
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
+            margin-top: -70px;
             margin-bottom: 20px;
+            border: 4px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         h1 {
             margin: 10px 0 5px;
             font-size: 28px;
+            color: #333;
         }
+        
         h3 {
-            margin: 0;
+            margin: 0 0 5px;
             font-weight: normal;
             color: #555;
+        }
+
+        .company {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #777;
         }
 
         p.about {
             margin: 20px 0;
             line-height: 1.5;
+            color: #666;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            background: #007bff;
+            display: inline-block;
+            width: 60%;
+            max-width: 250px;
+            padding: 10px 20px;
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 8px;
+            font-size: 15px;
+            transition: opacity 0.3s;
+        }
+
+        .button.save-contact {
+            width: 70%;
+            max-width: 300px;
+            padding: 14px 20px;
             font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         .button:hover {
-            opacity: 0.9;
+            opacity: 0.85;
+        }
+
+        .additional-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .additional-links a {
+            display: block;
+            margin: 8px 0;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .footer img {
+            height: 20px;
+            width: auto;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -67,18 +153,61 @@
 
 <div class="card">
 
-    <img class="profile" src="{{PHOTO_URL}}" alt="Profile Photo">
+    <!-- Cover Photo - University/Company Logo -->
+    <img class="cover-photo" src="images/uq-cover.jpg" alt="University of Queensland">
+
+    <div class="card-content">
+        <!-- Profile Photo - overlaps the cover photo -->
+        <img class="profile" src="images/nicholas-pollack.jpg" alt="Nicholas Pollack">
 
     <h1>Nicholas Pollack</h1>
     <h3>3rd Year Mechatronics Engineering Student</h3>
 
     <p class="about">Passionate about embedded systems, automation and robotics.</p>
 
-    <a class="button" href="mailto:npollack24@gmail.com">Email</a>
-    <a class="button" href="tel:+61490762889">Call</a>
-    <a class="button" href="https://www.linkedin.com/in/nicholaspollack/" target="_blank">Website</a>
+    <div class="buttons-container">
+        <a class="button" href="tel:+61490762889">📞 Call</a>
+        <a class="button" href="mailto:npollack24@gmail.com">📧 Email</a>
+        <a class="button" href="https://www.linkedin.com/in/nicholaspollack/" target="_blank">🌐 LinkedIn</a>
+        <a class="button save-contact" href="#" onclick="downloadVCard(); return false;">Save Contact</a>
+    </div>
 
-</div>
+    <script>
+        function downloadVCard() {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Nicholas Pollack
+N:Pollack;Nicholas;;;
+ORG:The University of Queensland
+TITLE:3rd Year Mechatronics Engineering Student
+EMAIL:npollack24@gmail.com
+TEL;TYPE=CELL:+61490762889
+URL:https://www.linkedin.com/in/nicholaspollack/
+NOTE:Passionate about embedded systems, automation and robotics.
+END:VCARD`;
+
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'nicholas-pollack.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+    <div class="footer">
+        <div class="footer-content">
+            <span>Powered by</span>
+            <img src="logo2.png" alt="Connect Card">
+        </div>
+    </div>
+
+    </div> <!-- End card-content -->
+
+</div> <!-- End card -->
 
 </body>
 </html>
