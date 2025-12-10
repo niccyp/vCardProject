@@ -124,6 +124,28 @@
         .additional-links a:hover {
             text-decoration: underline;
         }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .footer img {
+            height: 20px;
+            width: auto;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -175,6 +197,13 @@ END:VCARD`;
             URL.revokeObjectURL(url);
         }
     </script>
+
+    <div class="footer">
+        <div class="footer-content">
+            <span>Powered by</span>
+            <img src="logo2.png" alt="Connect Card">
+        </div>
+    </div>
 
     </div> <!-- End card-content -->
 
