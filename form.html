@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Digital vCard - Connect Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group label .required {
+            color: #dc3545;
+        }
+
+        .form-group label .optional {
+            color: #6c757d;
+            font-weight: normal;
+            font-size: 12px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="url"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .photo-upload {
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .photo-upload:hover {
+            background: #e9ecef;
+        }
+
+        .photo-upload input[type="file"] {
+            display: none;
+        }
+
+        .photo-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .photo-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .color-picker-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .color-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .color-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .color-option input[type="radio"]:checked + .color-swatch {
+            border-color: #333;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .buttons {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .preview-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .preview-section h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #856404;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 25px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎴 Create Your Digital vCard</h1>
+            <p>Fill in your details to generate your personalized profile page</p>
+        </div>
+
+        <div class="form-container">
+            <div class="info-box">
+                <p><strong>📌 How it works:</strong> Fill out this form with your information, then click "Generate vCard" to create your personalized profile page. You can download it and we'll link it to your NFC card.</p>
+            </div>
+
+            <form id="vcardForm">
+                <!-- Personal Information -->
+                <div class="section-title">📋 Personal Information</div>
+                
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="e.g., John Smith">
+                </div>
+
+                <div class="form-group">
+                    <label>Job Title <span class="required">*</span></label>
+                    <input type="text" id="jobTitle" name="jobTitle" required placeholder="e.g., Senior Software Engineer">
+                </div>
+
+                <div class="form-group">
+                    <label>Company/Organization <span class="optional">(optional)</span></label>
+                    <input type="text" id="company" name="company" placeholder="e.g., Tech Solutions Inc.">
+                </div>
+
+                <div class="form-group">
+                    <label>Brief Bio <span class="optional">(optional)</span></label>
+                    <textarea id="bio" name="bio" placeholder="Tell us about yourself in 1-2 sentences..."></textarea>
+                    <small>This will appear on your profile. Keep it professional and concise.</small>
+                </div>
+
+                <!-- Photos -->
+                <div class="section-title">📸 Photos</div>
+
+                <div class="form-group">
+                    <label>Profile Photo <span class="required">*</span></label>
+                    <div class="photo-upload" onclick="document.getElementById('profilePhoto').click()">
+                        <p>📷 Click to upload profile photo</p>
+                        <small>Recommended: Square image, min 400x400px</small>
+                        <input type="file" id="profilePhoto" accept="image/*">
+                        <div class="photo-preview" id="profilePreview">
+                            <img id="profileImg" src="" alt="Profile preview">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Cover Photo <span class="optional">(optional)</span></label>
+                    <div class="photo-upload" onclick="document.getElementById('coverPhoto').click()">
+                        <p>🖼️ Click to upload cover photo</p>
+                        <small>Recommended: 1200x400px or similar aspect ratio</small>
+                        <input type="file" id="coverPhoto" accept="image/*">
+                        <div class="photo-preview" id="coverPreview">
+                            <img id="coverImg" src="" alt="Cover preview">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="section-title">📞 Contact Information</div>
+
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="john.smith@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+61 400 000 000">
+                    <small>Include country code for international contacts</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Website <span class="optional">(optional)</span></label>
+                    <input type="url" id="website" name="website" placeholder="https://www.example.com">
+                </div>
+
+                <div class="form-group">
+                    <label>LinkedIn Profile <span class="optional">(optional)</span></label>
+                    <input type="url" id="linkedin" name="linkedin" placeholder="https://www.linkedin.com/in/yourname">
+                </div>
+
+                <!-- Theme Color -->
+                <div class="section-title">🎨 Theme Color</div>
+
+                <div class="form-group">
+                    <label>Choose your profile theme color</label>
+                    <div class="color-picker-group">
+                        <div class="color-option">
+                            <input type="radio" name="themeColor" value="#007bff" id="colorBlue" checked>
+                            <label for="colorBlue" class="color-swatch" style="background: #007bff;">Blue</label>
+                        </div>
+                        <div class="color-option">
+                            <input type="radio" name="themeColor" value="#28a745" id="colorGreen">
+                            <label for="colorGreen" class="color-swatch" style="background: #28a745;">Green</label>
+                        </div>
+                        <div class="color-option">
+                            <input type="radio" name="themeColor" value="#dc3545" id="colorRed">
+                            <label for="colorRed" class="color-swatch" style="background: #dc3545;">Red</label>
+                        </div>
+                        <div class="color-option">
+                            <input type="radio" name="themeColor" value="#6f42c1" id="colorPurple">
+                            <label for="colorPurple" class="color-swatch" style="background: #6f42c1;">Purple</label>
+                        </div>
+                        <div class="color-option">
+                            <input type="radio" name="themeColor" value="#fd7e14" id="colorOrange">
+                            <label for="colorOrange" class="color-swatch" style="background: #fd7e14;">Orange</label>
+                        </div>
+                        <div class="color-option">
+                            <input type="radio" name="themeColor" value="#20c997" id="colorTeal">
+                            <label for="colorTeal" class="color-swatch" style="background: #20c997;">Teal</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+                    <button type="submit" class="btn btn-primary">Generate vCard</button>
+                </div>
+            </form>
+
+            <!-- Preview/Download Section -->
+            <div class="preview-section" id="previewSection">
+                <h3>✅ Your vCard is Ready!</h3>
+                <p style="margin-bottom: 20px; color: #666;">Click the button below to download your personalized vCard page.</p>
+                <button class="btn btn-primary" onclick="downloadVCard()">📥 Download vCard HTML</button>
+                <button class="btn btn-secondary" style="margin-left: 10px;" onclick="previewVCard()">👁️ Preview in New Tab</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Photo preview handlers
+        document.getElementById('profilePhoto').addEventListener('change', function(e) {
+            handlePhotoPreview(e, 'profileImg', 'profilePreview');
+        });
+
+        document.getElementById('coverPhoto').addEventListener('change', function(e) {
+            handlePhotoPreview(e, 'coverImg', 'coverPreview');
+        });
+
+        function handlePhotoPreview(event, imgId, previewId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(imgId).src = e.target.result;
+                    document.getElementById(previewId).style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Global variable to store generated HTML
+        let generatedHTML = '';
+        let generatedBlob = null;
+
+        // Form submission
+        document.getElementById('vcardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateVCard();
+        });
+
+        function generateVCard() {
+            // Get form values
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                jobTitle: document.getElementById('jobTitle').value,
+                company: document.getElementById('company').value,
+                bio: document.getElementById('bio').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                website: document.getElementById('website').value,
+                linkedin: document.getElementById('linkedin').value,
+                themeColor: document.querySelector('input[name="themeColor"]:checked').value,
+                profilePhoto: document.getElementById('profileImg').src || '',
+                coverPhoto: document.getElementById('coverImg').src || ''
+            };
+
+            // Validate required fields
+            if (!formData.fullName || !formData.jobTitle || !formData.email || !formData.phone) {
+                alert('Please fill in all required fields (marked with *)');
+                return;
+            }
+
+            if (!formData.profilePhoto) {
+                alert('Please upload a profile photo');
+                return;
+            }
+
+            // Generate the HTML
+            generatedHTML = createVCardHTML(formData);
+            generatedBlob = new Blob([generatedHTML], { type: 'text/html' });
+
+            // Show preview section
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function createVCardHTML(data) {
+            // Create filename-safe version of name
+            const fileName = data.fullName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+            
+            // Create vCard data for download
+            const vCardData = createVCardData(data);
+
+            const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(data.fullName)} - Digital Card</title>
+    <style>
+        :root {
+            --primary-color: ${data.themeColor};
+        }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #f7f7f7;
+        }
+        .card {
+            background: white;
+            padding: 0;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .cover-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            ${data.coverPhoto ? '' : 'background: linear-gradient(135deg, var(--primary-color) 0%, ' + adjustColor(data.themeColor, -20) + ' 100%);'}
+        }
+        .card-content {
+            padding: 25px;
+        }
+        img.profile {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: -70px;
+            margin-bottom: 20px;
+            border: 4px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 10px 0 5px;
+            font-size: 28px;
+            color: #333;
+        }
+        h3 {
+            margin: 0 0 5px;
+            font-weight: normal;
+            color: #555;
+        }
+        .company {
+            margin: 0 0 15px;
+            font-size: 14px;
+            color: #777;
+        }
+        p.about {
+            margin: 20px 0;
+            line-height: 1.5;
+            color: #666;
+        }
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            width: 60%;
+            max-width: 250px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: opacity 0.3s;
+        }
+        .button.save-contact {
+            width: 70%;
+            max-width: 300px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .button:hover {
+            opacity: 0.85;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    ${data.coverPhoto ? `<img class="cover-photo" src="${data.coverPhoto}" alt="Cover">` : '<div class="cover-photo"></div>'}
+    <div class="card-content">
+        <img class="profile" src="${data.profilePhoto}" alt="${escapeHtml(data.fullName)}">
+        <h1>${escapeHtml(data.fullName)}</h1>
+        <h3>${escapeHtml(data.jobTitle)}</h3>
+        ${data.company ? `<p class="company">${escapeHtml(data.company)}</p>` : ''}
+        ${data.bio ? `<p class="about">${escapeHtml(data.bio)}</p>` : ''}
+        <div class="buttons-container">
+            <a class="button" href="tel:${data.phone}">📞 Call</a>
+            <a class="button" href="mailto:${data.email}">📧 Email</a>
+            ${data.website ? `<a class="button" href="${escapeHtml(data.website)}" target="_blank">🌐 Website</a>` : ''}
+            ${data.linkedin ? `<a class="button" href="${escapeHtml(data.linkedin)}" target="_blank">💼 LinkedIn</a>` : ''}
+            <a class="button save-contact" href="#" onclick="downloadVCard(); return false;">💾 Save Contact</a>
+        </div>
+        <script>
+            function downloadVCard() {
+                const vcard = \`${vCardData}\`;
+                const blob = new Blob([vcard], { type: 'text/vcard' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = '${fileName}.vcf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+        </script>
+        <div class="footer">
+            <p>Powered by Connect Card</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>`;
+            return html;
+        }
+
+        function createVCardData(data) {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${data.fullName}
+N:${data.fullName.split(' ').reverse().join(';')};;;
+${data.company ? 'ORG:' + data.company : ''}
+TITLE:${data.jobTitle}
+EMAIL:${data.email}
+TEL;TYPE=CELL:${data.phone}
+${data.website ? 'URL:' + data.website : ''}
+${data.linkedin ? 'URL:' + data.linkedin : ''}
+${data.bio ? 'NOTE:' + data.bio : ''}
+END:VCARD`;
+            return vcard;
+        }
+
+        function downloadVCard() {
+            if (!generatedBlob) {
+                alert('Please generate a vCard first');
+                return;
+            }
+            
+            const fileName = document.getElementById('fullName').value
+                .toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^a-z0-9-]/g, '') + '.html';
+            
+            const url = URL.createObjectURL(generatedBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function previewVCard() {
+            if (!generatedHTML) {
+                alert('Please generate a vCard first');
+                return;
+            }
+            
+            const newWindow = window.open();
+            newWindow.document.write(generatedHTML);
+            newWindow.document.close();
+        }
+
+        function resetForm() {
+            if (confirm('Are you sure you want to reset the form? All entered data will be lost.')) {
+                document.getElementById('vcardForm').reset();
+                document.getElementById('profilePreview').style.display = 'none';
+                document.getElementById('coverPreview').style.display = 'none';
+                document.getElementById('previewSection').style.display = 'none';
+                generatedHTML = '';
+                generatedBlob = null;
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function adjustColor(color, percent) {
+            const num = parseInt(color.replace("#",""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
+                (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255))
+                .toString(16).slice(1);
+        }
+    </script>
+</body>
+</html>

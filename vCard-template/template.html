@@ -20,10 +20,22 @@
 
         .card {
             background: white;
-            padding: 25px;
+            padding: 0;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .cover-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--primary-color, #667eea) 0%, {{COLOR_DARK}} 100%);
+        }
+
+        .card-content {
+            padding: 25px;
         }
 
         img.profile {
@@ -31,8 +43,10 @@
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
+            margin-top: -70px;
             margin-bottom: 20px;
-            border: 4px solid var(--primary-color, #007bff);
+            border: 4px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         h1 {
@@ -59,39 +73,47 @@
             color: #666;
         }
 
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
         .button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            background: var(--primary-color, #007bff);
+            display: inline-block;
+            width: 60%;
+            max-width: 250px;
+            padding: 10px 20px;
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             transition: opacity 0.3s;
+        }
+
+        .button.save-contact {
+            width: 70%;
+            max-width: 300px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         .button:hover {
             opacity: 0.85;
         }
 
-        .additional-links {
-            margin-top: 20px;
+        .footer {
+            margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #eee;
-        }
-
-        .additional-links a {
-            display: block;
-            margin: 8px 0;
-            color: var(--primary-color, #007bff);
-            text-decoration: none;
-            font-size: 15px;
-        }
-
-        .additional-links a:hover {
-            text-decoration: underline;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
         }
 
         /* Hide sections if no data */
@@ -104,26 +126,47 @@
 <body>
 
 <div class="card">
+    <!-- Cover Photo -->
+    {{COVER_PHOTO}}
+    
+    <div class="card-content">
+        <!-- Profile Photo - uses placeholder if none provided -->
+        <img class="profile" src="{{PHOTO_PATH}}" alt="{{NAME}}" onerror="this.src='../images/default-avatar.png'">
 
-    <!-- Profile Photo - uses placeholder if none provided -->
-    <img class="profile" src="{{PHOTO_PATH}}" alt="{{NAME}}" onerror="this.src='../images/default-avatar.png'">
+        <h1>{{NAME}}</h1>
+        <h3>{{JOB_TITLE}}</h3>
+        <p class="company {{COMPANY_HIDDEN}}">{{COMPANY}}</p>
 
-    <h1>{{NAME}}</h1>
-    <h3>{{JOB_TITLE}}</h3>
-    <p class="company {{COMPANY_HIDDEN}}">{{COMPANY}}</p>
+        <p class="about {{BIO_HIDDEN}}">{{BIO}}</p>
 
-    <p class="about {{BIO_HIDDEN}}">{{BIO}}</p>
+        <!-- Contact Buttons -->
+        <div class="buttons-container">
+            <a class="button" href="tel:{{PHONE}}">📞 Call</a>
+            <a class="button" href="mailto:{{EMAIL}}">📧 Email</a>
+            <a class="button {{WEBSITE_HIDDEN}}" href="{{WEBSITE}}" target="_blank">🌐 Website</a>
+            <a class="button {{LINKEDIN_HIDDEN}}" href="{{LINKEDIN}}" target="_blank">💼 LinkedIn</a>
+            <a class="button save-contact" href="#" onclick="downloadVCard(); return false;">💾 Save Contact</a>
+        </div>
 
-    <!-- Primary Contact Buttons -->
-    <a class="button" href="mailto:{{EMAIL}}">📧 Email</a>
-    <a class="button" href="tel:{{PHONE}}">📞 Call</a>
-    <a class="button {{WEBSITE_HIDDEN}}" href="{{WEBSITE}}" target="_blank">🌐 Website</a>
+        <script>
+            function downloadVCard() {
+                const vcard = `{{VCARD_DATA}}`;
+                const blob = new Blob([vcard], { type: 'text/vcard' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = '{{FILENAME}}.vcf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+        </script>
 
-    <!-- Additional Links Section -->
-    <div class="additional-links {{ADDITIONAL_LINKS_HIDDEN}}">
-        {{ADDITIONAL_LINKS}}
+        <div class="footer">
+            <p>Powered by Connect Card</p>
+        </div>
     </div>
-
 </div>
 
 </body>
